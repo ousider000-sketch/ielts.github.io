@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Writing Task 2 - C1 & C2 Collocations (All Topics)</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #fff;
+            text-align: center;
+            padding: 30px 20px 20px 20px;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #38bdf8;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        /* Filter Section */
+        .filter-container {
+            background: #1e293b;
+            padding: 10px 20px 20px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .topic-select {
+            background: #0f172a;
+            color: #38bdf8;
+            border: 1px solid #3b82f6;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Navigation Tabs */
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 2px solid #e2e8f0;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Main Container */
+        main {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Flashcard Styles */
+        .flashcard-wrapper {
+            perspective: 1000px;
+            margin: 20px auto;
+            width: 100%;
+            max-width: 520px;
+            height: 340px;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: #f1f5f9;
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-topic {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .card-word {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .card-ipa {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .card-meaning {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .card-example {
+            font-size: 0.9rem;
+            color: #475569;
+            background: #fff;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .card-hint {
+            position: absolute;
+            bottom: 15px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .audio-btn {
+            background: #eff6ff;
+            border: none;
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .audio-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn-outline { background: transparent; color: var(--text); border: 1px solid #cbd5e1; }
+        .btn-outline:hover { background: #e2e8f0; }
+
+        /* Quiz Styles */
+        .quiz-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .option-btn.correct {
+            background: #d1fae5;
+            border-color: var(--success);
+            color: #065f46;
+        }
+
+        .option-btn.wrong {
+            background: #fee2e2;
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .score-num {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* List Items (Corpus & Code-switching) */
+        .item-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .item-meaning {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .sentence-box {
+            background: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .hl-en {
+            color: #2563eb;
+            font-weight: 700;
+            background: #dbeafe;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .hl-vi {
+            color: #d97706;
+            font-weight: 700;
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>IELTS Writing C1/C2 Collocations</h1>
+        <p>Tổng hợp ngữ liệu nâng cao cho Writing Task 2</p>
+    </header>
+
+    <div class="filter-container">
+        <span class="filter-label">🎯 Chọn chủ đề bài học:</span>
+        <select class="topic-select" id="topicFilter" onchange="onTopicChange()">
+            <option value="ALL">🌐 Tất cả chủ đề (All Topics)</option>
+            <option value="Art">🎨 Art & Creative Freedom</option>
+            <option value="Business">💼 Business & Money</option>
+            <option value="Education">🎓 Education & Pedagogy</option>
+            <option value="Environment">🌱 Environment & Ecology</option>
+            <option value="Language">🗣️ Language & Culture</option>
+            <option value="Society">🏛️ Society & Global Issues</option>
+            <option value="Sport">⚽ Sport & Physical Activity</option>
+            <option value="Work">💻 Work & Technology</option>
+        </select>
+    </div>
+
+    <nav>
+        <button class="tab-btn active" onclick="switchTab('flashcard')">🎴 Flashcard</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">📝 Trắc nghiệm</button>
+        <button class="tab-btn" onclick="switchTab('corpus')">📖 Ngữ liệu thực tế</button>
+        <button class="tab-btn" onclick="switchTab('en-vi')">🔀 Chèn Anh vào Việt</button>
+        <button class="tab-btn" onclick="switchTab('vi-en')">🔀 Chèn Việt vào Anh</button>
+    </nav>
+
+    <main>
+        <!-- 1. FLASHCARD TAB -->
+        <section id="flashcard" class="tab-content active">
+            <div class="flashcard-wrapper" onclick="flipCard()">
+                <div class="flashcard" id="card">
+                    <div class="card-face card-front">
+                        <div class="badge-container">
+                            <span class="badge" id="fc-badge">C1/C2</span>
+                            <span class="badge badge-topic" id="fc-topic">Topic</span>
+                        </div>
+                        <div class="card-word" id="fc-word">Loading...</div>
+                        <div class="card-ipa" id="fc-ipa">/.../</div>
+                        <button class="audio-btn" onclick="event.stopPropagation(); speakCurrentWord()">🔊</button>
+                        <div class="card-hint">💡 Nhấp để xem nghĩa tiếng Việt & ví dụ</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-meaning" id="fc-meaning">Loading...</div>
+                        <div class="card-example" id="fc-example">Loading example...</div>
+                        <div class="card-hint">💡 Nhấp để quay lại mặt trước</div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-outline" onclick="prevCard()">⬅️ Trước</button>
+                <button class="btn btn-outline" onclick="randomCard()">🎲 Ngẫu nhiên</button>
+                <button class="btn" onclick="nextCard()">Tiếp ➡️</button>
+            </div>
+            <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--text-muted);" id="fc-counter">Thẻ 1 / 1</p>
+        </section>
+
+        <!-- 2. QUIZ TAB -->
+        <section id="quiz" class="tab-content">
+            <div class="quiz-card" id="quiz-container">
+                <!-- Content populated dynamically -->
+            </div>
+        </section>
+
+        <!-- 3. CORPUS TAB -->
+        <section id="corpus" class="tab-content">
+            <div id="corpus-list"></div>
+        </section>
+
+        <!-- 4. CODE-SWITCHING EN IN VI TAB -->
+        <section id="en-vi" class="tab-content">
+            <div id="en-vi-list"></div>
+        </section>
+
+        <!-- 5. CODE-SWITCHING VI IN EN TAB -->
+        <section id="vi-en" class="tab-content">
+            <div id="vi-en-list"></div>
+        </section>
+    </main>
+
+    <script>
+        // DỮ LIỆU TỪ VỰNG TRÍCH XUẤT TỪ FILE PDF IELTS HIKING (FULL TOPICS)
+        const fullVocabData = [
+            // --- TOPIC: ART ---
+            {
+                topic: "Art",
+                word: "Absolute creative freedom",
+                type: "C1 Collocation",
+                ipa: "/ˈæbsəluːt kriˈeɪtɪv ˈfriːdəm/",
+                meaning: "Tự do sáng tạo tuyệt đối",
+                corpusEn: "Many argue that absolute creative freedom is essential for artistic innovation.",
+                corpusVi: "Nhiều người cho rằng tự do sáng tạo tuyệt đối là cần thiết cho sự đổi mới nghệ thuật.",
+                enInVi: "Nhiều nhà phân tích cho rằng <span class='hl-en'>absolute creative freedom</span> là yếu tố cốt lõi để nghệ sĩ bứt phá.",
+                viInEn: "Many argue that <span class='hl-vi'>tự do sáng tạo tuyệt đối</span> is essential for artistic innovation."
+            },
+            {
+                topic: "Art",
+                word: "Government censorship",
+                type: "C1 Collocation",
+                ipa: "/ˈɡʌvnmənt ˈsɛnsərʃɪp/",
+                meaning: "Kiểm duyệt của chính phủ",
+                corpusEn: "Government censorship can stifle artistic creativity and limit cultural growth.",
+                corpusVi: "Kiểm duyệt của chính phủ có thể kìm hãm sự sáng tạo nghệ thuật và hạn chế sự phát triển văn hóa.",
+                enInVi: "Sự can thiệp quá mức từ <span class='hl-en'>government censorship</span> có thể kìm hãm tiềm năng nghệ thuật.",
+                viInEn: "<span class='hl-vi'>Kiểm duyệt của chính phủ</span> can stifle artistic creativity and limit cultural growth."
+            },
+            {
+                topic: "Art",
+                word: "Artistic autonomy",
+                type: "C2 Collocation",
+                ipa: "/ɑːˈtɪstɪk ɔːˈtɒnəmi/",
+                meaning: "Tự chủ nghệ thuật",
+                corpusEn: "Artistic autonomy is crucial for the development of a vibrant cultural scene.",
+                corpusVi: "Tự chủ nghệ thuật là rất quan trọng cho sự phát triển của một cảnh văn hóa sôi động.",
+                enInVi: "Đảm bảo tính <span class='hl-en'>artistic autonomy</span> giúp đời sống văn hóa xã hội trở nên phong phú hơn.",
+                viInEn: "<span class='hl-vi'>Tự chủ nghệ thuật</span> is crucial for the development of a vibrant cultural scene."
+            },
+
+            // --- TOPIC: BUSINESS & MONEY ---
+            {
+                topic: "Business",
+                word: "Bureaucratic inefficiencies",
+                type: "C2 Collocation",
+                ipa: "/ˌbjʊərəˈkrætɪk ˌɪnɪˈfɪʃənsiz/",
+                meaning: "Sự kém hiệu quả của bộ máy quan liêu",
+                corpusEn: "Bureaucratic inefficiencies can hinder innovation in large corporations.",
+                corpusVi: "Sự kém hiệu quả của bộ máy quan liêu có thể cản trở sự sáng tạo trong các tập đoàn lớn.",
+                enInVi: "Nhiều doanh nghiệp gặp khó khăn do ảnh hưởng bởi <span class='hl-en'>bureaucratic inefficiencies</span> kéo dài.",
+                viInEn: "<span class='hl-vi'>Sự kém hiệu quả của bộ máy quan liêu</span> can hinder innovation in large corporations."
+            },
+            {
+                topic: "Business",
+                word: "Global consumer culture",
+                type: "C1 Collocation",
+                ipa: "/ˈɡloʊbl kənˈsuːmər ˈkʌltʃər/",
+                meaning: "Văn hóa tiêu dùng toàn cầu",
+                corpusEn: "A global consumer culture is emerging due to international marketing practices.",
+                corpusVi: "Một văn hóa tiêu dùng toàn cầu đang nổi lên do các hoạt động tiếp thị quốc tế.",
+                enInVi: "Sự bùng nổ của thương mại điện tử đã đẩy nhanh sự hình thành <span class='hl-en'>global consumer culture</span>.",
+                viInEn: "A <span class='hl-vi'>văn hóa tiêu dùng toàn cầu</span> is emerging due to international marketing practices."
+            },
+
+            // --- TOPIC: EDUCATION ---
+            {
+                topic: "Education",
+                word: "Application-based learning",
+                type: "C1 Collocation",
+                ipa: "/ˌæplɪˈkeɪʃən beɪst ˈlɜːrnɪŋ/",
+                meaning: "Học dựa trên ứng dụng thực tế",
+                corpusEn: "Application-based learning helps students develop skills directly applicable to their careers.",
+                corpusVi: "Học dựa trên ứng dụng giúp học sinh phát triển các kỹ năng có thể áp dụng trực tiếp vào nghề nghiệp.",
+                enInVi: "Các trường đại học hiện đại đang chuyển dịch mạnh mẽ sang mô hình <span class='hl-en'>application-based learning</span>.",
+                viInEn: "<span class='hl-vi'>Học dựa trên ứng dụng thực tế</span> helps students develop skills directly applicable to their careers."
+            },
+            {
+                topic: "Education",
+                word: "Pedagogical expertise",
+                type: "C2 Collocation",
+                ipa: "/ˌpɛdəˈɡɒdʒɪkəl ˌɛkspɜːrˈtiːz/",
+                meaning: "Chuyên môn sư phạm",
+                corpusEn: "Pedagogical expertise is essential for effective teaching and learning.",
+                corpusVi: "Chuyên môn sư phạm là cần thiết cho việc giảng dạy và học tập hiệu quả.",
+                enInVi: "Giáo viên không chỉ cần kiến thức rộng mà còn phải nâng cao <span class='hl-en'>pedagogical expertise</span>.",
+                viInEn: "<span class='hl-vi'>Chuyên môn sư phạm</span> is essential for effective teaching and learning."
+            },
+
+            // --- TOPIC: ENVIRONMENT ---
+            {
+                topic: "Environment",
+                word: "Environmental degradation",
+                type: "C1 Collocation",
+                ipa: "/ɪnˌvaɪrənˈmɛntl ˌdɛɡrəˈdeɪʃən/",
+                meaning: "Suy thoái môi trường",
+                corpusEn: "Environmental degradation leads to severe species decline and ecosystem disruption.",
+                corpusVi: "Suy thoái môi trường dẫn đến suy giảm nghiêm trọng các loài và làm gián đoạn hệ sinh thái.",
+                enInVi: "Tốc độ đô thị hóa nhanh chóng đang gây ra mối lo ngại lớn về <span class='hl-en'>environmental degradation</span>.",
+                viInEn: "<span class='hl-vi'>Suy thoái môi trường</span> leads to severe species decline and ecosystem disruption."
+            },
+            {
+                topic: "Environment",
+                word: "Anthropogenic factors",
+                type: "C2 Collocation",
+                ipa: "/ˌænθrəpəˈdʒɛnɪk ˈfæktərz/",
+                meaning: "Các yếu tố do con người gây ra",
+                corpusEn: "Anthropogenic factors are the primary cause of modern biodiversity loss.",
+                corpusVi: "Các yếu tố do con người gây ra là nguyên nhân chính gây ra biến đổi đa dạng sinh học.",
+                enInVi: "Sự suy giảm rừng nguyên sinh phần lớn bắt nguồn từ các <span class='hl-en'>anthropogenic factors</span>.",
+                viInEn: "<span class='hl-vi'>Các yếu tố do con người gây ra</span> are the primary cause of modern biodiversity loss."
+            },
+
+            // --- TOPIC: LANGUAGE & CULTURE ---
+            {
+                topic: "Language",
+                word: "Linguistic monopoly",
+                type: "C2 Collocation",
+                ipa: "/lɪŋˈɡwɪstɪk məˈnɒpəli/",
+                meaning: "Sự độc tôn ngôn ngữ",
+                corpusEn: "A linguistic monopoly can threaten the preservation of minority languages.",
+                corpusVi: "Sự độc tôn ngôn ngữ có thể đe dọa việc bảo tồn các ngôn ngữ thiểu số.",
+                enInVi: "Sự thống trị của tiếng Anh toàn cầu có nguy cơ tạo ra một <span class='hl-en'>linguistic monopoly</span>.",
+                viInEn: "A <span class='hl-vi'>sự độc tôn ngôn ngữ</span> can threaten the preservation of minority languages."
+            },
+            {
+                topic: "Language",
+                word: "Cross-cultural competence",
+                type: "C1 Collocation",
+                ipa: "/krɒs ˈkʌltʃərəl ˈkɒmpɪtəns/",
+                meaning: "Năng lực giao tiếp liên văn hóa",
+                corpusEn: "Cross-cultural competence is enhanced through multilingual education.",
+                corpusVi: "Năng lực liên văn hóa được nâng cao thông qua giáo dục đa ngôn ngữ.",
+                enInVi: "Làm việc trong môi trường đa quốc gia đòi hỏi nhân sự phải trang bị <span class='hl-en'>cross-cultural competence</span>.",
+                viInEn: "<span class='hl-vi'>Năng lực giao tiếp liên văn hóa</span> is enhanced through multilingual education."
+            },
+
+            // --- TOPIC: SOCIETY ---
+            {
+                topic: "Society",
+                word: "Structural reforms",
+                type: "C1 Collocation",
+                ipa: "/ˈstrʌktʃərəl rɪˈfɔːrmz/",
+                meaning: "Cải cách cơ cấu hệ thống",
+                corpusEn: "Structural reforms are essential for addressing systemic social inequalities.",
+                corpusVi: "Cải cách cơ cấu là cần thiết để giải quyết các bất bình đẳng hệ thống xã hội.",
+                enInVi: "Chính phủ đang triển khai các đợt <span class='hl-en'>structural reforms</span> để thúc đẩy công bằng xã hội.",
+                viInEn: "<span class='hl-vi'>Cải cách cơ cấu hệ thống</span> are essential for addressing systemic social inequalities."
+            },
+
+            // --- TOPIC: SPORT ---
+            {
+                topic: "Sport",
+                word: "Sky-high salaries",
+                type: "C1 Collocation",
+                ipa: "/skaɪ haɪ ˈsæləriz/",
+                meaning: "Mức lương cao ngất trời",
+                corpusEn: "Some argue that sky-high salaries for professional athletes are disproportionate.",
+                corpusVi: "Một số người cho rằng mức lương cao ngất trời cho các vận động viên chuyên nghiệp là không tương xứng.",
+                enInVi: "Việc các ngôi sao bóng đá nhận <span class='hl-en'>sky-high salaries</span> đang gây ra nhiều tranh cãi dư luận.",
+                viInEn: "Some argue that <span class='hl-vi'>mức lương cao ngất trời</span> for professional athletes are disproportionate."
+            },
+
+            // --- TOPIC: WORK & TECH ---
+            {
+                topic: "Work",
+                word: "Technological advancements",
+                type: "C1 Collocation",
+                ipa: "/ˌtɛknəˈlɒdʒɪkəl ədˈvænsmənts/",
+                meaning: "Sự tiến bộ công nghệ",
+                corpusEn: "Technological advancements have revolutionized modern workspace efficiency.",
+                corpusVi: "Sự tiến bộ công nghệ đã cách mạng hóa hiệu suất làm việc hiện đại.",
+                enInVi: "Nhờ có các <span class='hl-en'>technological advancements</span>, con người có thể làm việc từ xa dễ dàng.",
+                viInEn: "<span class='hl-vi'>Sự tiến bộ công nghệ</span> have revolutionized modern workspace efficiency."
+            },
+            {
+                topic: "Work",
+                word: "Equitable compensation",
+                type: "C2 Collocation",
+                ipa: "/ˈɛkwɪtəbl ˌkɒmpɛnˈseɪʃən/",
+                meaning: "Sự bồi thường/thù lao công bằng",
+                corpusEn: "Advocates argue for equitable compensation across all employment sectors.",
+                corpusVi: "Những người ủng hộ lập luận cho sự thù lao công bằng trên tất cả các lĩnh vực việc làm.",
+                enInVi: "Đảm bảo chế độ <span class='hl-en'>equitable compensation</span> giúp tăng mức độ gắn kết của người lao động.",
+                viInEn: "Advocates argue for <span class='hl-vi'>sự thù lao công bằng</span> across all employment sectors."
+            }
+        ];
+
+        let filteredVocab = [...fullVocabData];
+        let currentIndex = 0;
+        let quizScore = 0;
+        let currentQuizIndex = 0;
+        let shuffledQuiz = [];
+
+        // TOPIC FILTER LOGIC
+        function onTopicChange() {
+            const selectedTopic = document.getElementById("topicFilter").value;
+            if (selectedTopic === "ALL") {
+                filteredVocab = [...fullVocabData];
+            } else {
+                filteredVocab = fullVocabData.filter(item => item.topic === selectedTopic);
+            }
+            
+            currentIndex = 0;
+            updateFlashcard();
+            renderLists();
+            initQuiz();
+        }
+
+        // 1. FLASHCARD CONTROLLER
+        function updateFlashcard() {
+            const cardElement = document.getElementById("card");
+            cardElement.classList.remove("flipped");
+
+            setTimeout(() => {
+                if (filteredVocab.length === 0) return;
+                const item = filteredVocab[currentIndex];
+                document.getElementById("fc-badge").innerText = item.type;
+                document.getElementById("fc-topic").innerText = item.topic;
+                document.getElementById("fc-word").innerText = item.word;
+                document.getElementById("fc-ipa").innerText = item.ipa;
+                document.getElementById("fc-meaning").innerText = item.meaning;
+                document.getElementById("fc-example").innerText = `" ${item.corpusEn} "`;
+                document.getElementById("fc-counter").innerText = `Thẻ ${currentIndex + 1} / ${filteredVocab.length}`;
+            }, 150);
+        }
+
+        function flipCard() {
+            document.getElementById("card").classList.toggle("flipped");
+        }
+
+        function nextCard() {
+            if (filteredVocab.length === 0) return;
+            currentIndex = (currentIndex + 1) % filteredVocab.length;
+            updateFlashcard();
+        }
+
+        function prevCard() {
+            if (filteredVocab.length === 0) return;
+            currentIndex = (currentIndex - 1 + filteredVocab.length) % filteredVocab.length;
+            updateFlashcard();
+        }
+
+        function randomCard() {
+            if (filteredVocab.length === 0) return;
+            currentIndex = Math.floor(Math.random() * filteredVocab.length);
+            updateFlashcard();
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Trình duyệt không hỗ trợ phát âm tự động.");
+            }
+        }
+
+        function speakCurrentWord() {
+            if (filteredVocab.length > 0) {
+                speakText(filteredVocab[currentIndex].word);
+            }
+        }
+
+        // 2. QUIZ CONTROLLER
+        function initQuiz() {
+            quizScore = 0;
+            currentQuizIndex = 0;
+            shuffledQuiz = [...filteredVocab].sort(() => Math.random() - 0.5);
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const container = document.getElementById("quiz-container");
+            if (shuffledQuiz.length === 0) {
+                container.innerHTML = `<p style='text-align:center;'>Không có dữ liệu cho chủ đề này.</p>`;
+                return;
+            }
+
+            if (currentQuizIndex >= shuffledQuiz.length) {
+                container.innerHTML = `
+                    <div class="score-board">
+                        <h2>🎉 Hoàn thành bài trắc nghiệm!</h2>
+                        <p style="margin-top: 10px;">Điểm số của bạn:</p>
+                        <div class="score-num">${quizScore} / ${shuffledQuiz.length}</div>
+                        <button class="btn" style="margin-top: 20px;" onclick="initQuiz()">🔄 Làm lại bài kiểm tra</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const q = shuffledQuiz[currentQuizIndex];
+            let wrongOptions = fullVocabData
+                .filter(item => item.word !== q.word)
+                .map(item => item.meaning)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3);
+            
+            let allOptions = [q.meaning, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.85rem; color: var(--text-muted);">
+                    <span>Câu hỏi ${currentQuizIndex + 1} / ${shuffledQuiz.length} (${q.topic})</span>
+                    <span>Điểm: ${quizScore}</span>
+                </div>
+                <div class="quiz-question">Cụm từ "<strong>${q.word}</strong>" có nghĩa là gì?</div>
+                <div class="options-grid">
+                    ${allOptions.map(opt => `
+                        <button class="option-btn" onclick="checkAnswer(this, '\${opt === q.meaning}', '\\({q.meaning.replace(/'/g, "\\'")}')">\\){opt}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function checkAnswer(btn, isCorrect, correctMeaning) {
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (isCorrect === 'true') {
+                btn.classList.add('correct');
+                quizScore++;
+            } else {
+                btn.classList.add('wrong');
+                allBtns.forEach(b => {
+                    if (b.innerText === correctMeaning) b.classList.add('correct');
+                });
+            }
+
+            setTimeout(() => {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            }, 1200);
+        }
+
+        // 3. RENDER OTHER LISTS
+        function renderLists() {
+            // Corpus
+            const corpusList = document.getElementById("corpus-list");
+            corpusList.innerHTML = filteredVocab.map(item => `
+                <div class="item-card">
+                    <div class="item-title">
+                        <span>${item.word} <small style='font-size:0.75rem; color:#64748b;'>(${item.topic})</small></span>
+                        <button class="audio-btn" onclick="speakText('${item.word}')">🔊</button>
+                    </div>
+                    <div class="item-meaning">💡 Nghĩa: ${item.meaning}</div>
+                    <div class="sentence-box">
+                        <p style="font-weight: 600; color: #1e293b;">EN: "${item.corpusEn}"</p>
+                        <p style="color: #64748b; margin-top: 4px;">VI: ${item.corpusVi}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // EN in VI
+            const enViList = document.getElementById("en-vi-list");
+            enViList.innerHTML = filteredVocab.map(item => `
+                <div class="item-card">
+                    <div class="item-title">
+                        <span>${item.word}</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">${item.meaning}</span>
+                    </div>
+                    <div class="sentence-box">
+                        <p>${item.enInVi}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // VI in EN
+            const viEnList = document.getElementById("vi-en-list");
+            viEnList.innerHTML = filteredVocab.map(item => `
+                <div class="item-card">
+                    <div class="item-title">
+                        <span>${item.word}</span>
+                        <button class="audio-btn" onclick="speakText('${item.corpusEn}')">🔊</button>
+                    </div>
+                    <div class="sentence-box">
+                        <p>${item.viInEn}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // TAB SWITCHING
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+
+            if (tabId === 'quiz' && currentQuizIndex === 0) {
+                initQuiz();
+            }
+        }
+
+        // INIT APPLICATION
+        window.onload = function() {
+            updateFlashcard();
+            renderLists();
+        };
+    </script>
+</body>
+</html>
