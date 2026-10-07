@@ -697,6 +697,7 @@
         // 1. FLASHCARD CONTROLLER
         function updateFlashcard() {
             const cardElement = document.getElementById("card");
+            if (!cardElement) return;
             cardElement.classList.remove("flipped");
 
             setTimeout(() => {
@@ -780,13 +781,13 @@
             }
 
             const q = shuffledQuiz[currentQuizIndex];
-            let wrongOptions = fullVocabData
+            const wrongOptions = fullVocabData
                 .filter(item => item.word !== q.word)
                 .map(item => item.meaning)
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 3);
             
-            let allOptions = [q.meaning, ...wrongOptions].sort(() => Math.random() - 0.5);
+            const allOptions = [q.meaning, ...wrongOptions].sort(() => Math.random() - 0.5);
 
             container.innerHTML = `
                 <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.85rem; color: var(--text-muted);">
@@ -796,7 +797,7 @@
                 <div class="quiz-question">Cụm từ "<strong>${q.word}</strong>" có nghĩa là gì?</div>
                 <div class="options-grid">
                     ${allOptions.map(opt => `
-                        <button class="option-btn" onclick="checkAnswer(this, '\${opt === q.meaning}', '\\({q.meaning.replace(/'/g, "\\'")}')">\\){opt}</button>
+                        <button class="option-btn" onclick="checkAnswer(this, ${opt === q.meaning}, '${q.meaning.replace(/'/g, "\\'")}' )">${opt}</button>
                     `).join('')}
                 </div>
             `;
@@ -806,7 +807,7 @@
             const allBtns = document.querySelectorAll('.option-btn');
             allBtns.forEach(b => b.disabled = true);
 
-            if (isCorrect === 'true') {
+            if (isCorrect === true) {
                 btn.classList.add('correct');
                 quizScore++;
             } else {
@@ -824,49 +825,54 @@
 
         // 3. RENDER OTHER LISTS
         function renderLists() {
-            // Corpus
             const corpusList = document.getElementById("corpus-list");
-            corpusList.innerHTML = filteredVocab.map(item => `
-                <div class="item-card">
-                    <div class="item-title">
-                        <span>${item.word} <small style='font-size:0.75rem; color:#64748b;'>(${item.topic})</small></span>
-                        <button class="audio-btn" onclick="speakText('${item.word}')">🔊</button>
+            if (corpusList) {
+                corpusList.innerHTML = filteredVocab.map((item) => `
+                    <div class="item-card">
+                        <div class="item-title">
+                            <span>${item.word} <small style='font-size:0.75rem; color:#64748b;'>(${item.topic})</small></span>
+                            <button class="audio-btn" onclick="speakText('${item.word.replace(/'/g, "\\'") }')">🔊</button>
+                        </div>
+                        <div class="item-meaning">💡 Nghĩa: ${item.meaning}</div>
+                        <div class="sentence-box">
+                            <p style="font-weight: 600; color: #1e293b;">EN: "${item.corpusEn}"</p>
+                            <p style="color: #64748b; margin-top: 4px;">VI: ${item.corpusVi}</p>
+                        </div>
                     </div>
-                    <div class="item-meaning">💡 Nghĩa: ${item.meaning}</div>
-                    <div class="sentence-box">
-                        <p style="font-weight: 600; color: #1e293b;">EN: "${item.corpusEn}"</p>
-                        <p style="color: #64748b; margin-top: 4px;">VI: ${item.corpusVi}</p>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
             // EN in VI
             const enViList = document.getElementById("en-vi-list");
-            enViList.innerHTML = filteredVocab.map(item => `
-                <div class="item-card">
-                    <div class="item-title">
-                        <span>${item.word}</span>
-                        <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">${item.meaning}</span>
+            if (enViList) {
+                enViList.innerHTML = filteredVocab.map(item => `
+                    <div class="item-card">
+                        <div class="item-title">
+                            <span>${item.word}</span>
+                            <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">${item.meaning}</span>
+                        </div>
+                        <div class="sentence-box">
+                            <p>${item.enInVi}</p>
+                        </div>
                     </div>
-                    <div class="sentence-box">
-                        <p>${item.enInVi}</p>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
             // VI in EN
             const viEnList = document.getElementById("vi-en-list");
-            viEnList.innerHTML = filteredVocab.map(item => `
-                <div class="item-card">
-                    <div class="item-title">
-                        <span>${item.word}</span>
-                        <button class="audio-btn" onclick="speakText('${item.corpusEn}')">🔊</button>
+            if (viEnList) {
+                viEnList.innerHTML = filteredVocab.map(item => `
+                    <div class="item-card">
+                        <div class="item-title">
+                            <span>${item.word}</span>
+                            <button class="audio-btn" onclick="speakText('${item.corpusEn.replace(/'/g, "\\'") }')">🔊</button>
+                        </div>
+                        <div class="sentence-box">
+                            <p>${item.viInEn}</p>
+                        </div>
                     </div>
-                    <div class="sentence-box">
-                        <p>${item.viInEn}</p>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
 
         // TAB SWITCHING
@@ -874,7 +880,8 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
-            event.currentTarget.classList.add('active');
+            const activeButton = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.includes(tabId) || btn.onclick && btn.onclick.toString().includes(tabId));
+            if (activeButton) activeButton.classList.add('active');
             document.getElementById(tabId).classList.add('active');
 
             if (tabId === 'quiz' && currentQuizIndex === 0) {
