@@ -52,7 +52,6 @@
             color: #94a3b8;
         }
 
-        /* Filter Section */
         .filter-container {
             background: #1e293b;
             padding: 10px 20px 20px 20px;
@@ -81,7 +80,6 @@
             cursor: pointer;
         }
 
-        /* Navigation Tabs */
         nav {
             display: flex;
             justify-content: center;
@@ -119,7 +117,6 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
-        /* Main Container */
         main {
             max-width: 850px;
             margin: 0 auto;
@@ -140,7 +137,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Flashcard Styles */
         .flashcard-wrapper {
             perspective: 1000px;
             margin: 20px auto;
@@ -289,7 +285,6 @@
         .btn-outline { background: transparent; color: var(--text); border: 1px solid #cbd5e1; }
         .btn-outline:hover { background: #e2e8f0; }
 
-        /* Quiz Styles */
         .quiz-card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -349,7 +344,6 @@
             color: var(--primary);
         }
 
-        /* List Items (Corpus & Code-switching) */
         .item-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -428,17 +422,16 @@
     </div>
 
     <nav>
-        <button class="tab-btn active" onclick="switchTab('flashcard')">🎴 Flashcard</button>
-        <button class="tab-btn" onclick="switchTab('quiz')">📝 Trắc nghiệm</button>
-        <button class="tab-btn" onclick="switchTab('corpus')">📖 Ngữ liệu thực tế</button>
-        <button class="tab-btn" onclick="switchTab('en-vi')">🔀 Chèn Anh vào Việt</button>
-        <button class="tab-btn" onclick="switchTab('vi-en')">🔀 Chèn Việt vào Anh</button>
+        <button class="tab-btn active" data-tab="flashcard">🎴 Flashcard</button>
+        <button class="tab-btn" data-tab="quiz">📝 Trắc nghiệm</button>
+        <button class="tab-btn" data-tab="corpus">📖 Ngữ liệu thực tế</button>
+        <button class="tab-btn" data-tab="en-vi">🔀 Chèn Anh vào Việt</button>
+        <button class="tab-btn" data-tab="vi-en">🔀 Chèn Việt vào Anh</button>
     </nav>
 
     <main>
-        <!-- 1. FLASHCARD TAB -->
         <section id="flashcard" class="tab-content active">
-            <div class="flashcard-wrapper" onclick="flipCard()">
+            <div class="flashcard-wrapper" id="flashcardWrapper">
                 <div class="flashcard" id="card">
                     <div class="card-face card-front">
                         <div class="badge-container">
@@ -447,7 +440,7 @@
                         </div>
                         <div class="card-word" id="fc-word">Loading...</div>
                         <div class="card-ipa" id="fc-ipa">/.../</div>
-                        <button class="audio-btn" onclick="event.stopPropagation(); speakCurrentWord()">🔊</button>
+                        <button class="audio-btn" id="speakCurrentWordBtn" type="button">🔊</button>
                         <div class="card-hint">💡 Nhấp để xem nghĩa tiếng Việt & ví dụ</div>
                     </div>
                     <div class="card-face card-back">
@@ -458,219 +451,54 @@
                 </div>
             </div>
             <div class="controls">
-                <button class="btn btn-outline" onclick="prevCard()">⬅️ Trước</button>
-                <button class="btn btn-outline" onclick="randomCard()">🎲 Ngẫu nhiên</button>
-                <button class="btn" onclick="nextCard()">Tiếp ➡️</button>
+                <button class="btn btn-outline" id="prevCardBtn" type="button">⬅️ Trước</button>
+                <button class="btn btn-outline" id="randomCardBtn" type="button">🎲 Ngẫu nhiên</button>
+                <button class="btn" id="nextCardBtn" type="button">Tiếp ➡️</button>
             </div>
             <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--text-muted);" id="fc-counter">Thẻ 1 / 1</p>
         </section>
 
-        <!-- 2. QUIZ TAB -->
         <section id="quiz" class="tab-content">
-            <div class="quiz-card" id="quiz-container">
-                <!-- Content populated dynamically -->
-            </div>
+            <div class="quiz-card" id="quiz-container"></div>
         </section>
 
-        <!-- 3. CORPUS TAB -->
         <section id="corpus" class="tab-content">
             <div id="corpus-list"></div>
         </section>
 
-        <!-- 4. CODE-SWITCHING EN IN VI TAB -->
         <section id="en-vi" class="tab-content">
             <div id="en-vi-list"></div>
         </section>
 
-        <!-- 5. CODE-SWITCHING VI IN EN TAB -->
         <section id="vi-en" class="tab-content">
             <div id="vi-en-list"></div>
         </section>
     </main>
 
     <script>
-        // DỮ LIỆU TỪ VỰNG TRÍCH XUẤT TỪ FILE PDF IELTS HIKING (FULL TOPICS)
         const fullVocabData = [
-            // --- TOPIC: ART ---
-            {
-                topic: "Art",
-                word: "Absolute creative freedom",
-                type: "C1 Collocation",
-                ipa: "/ˈæbsəluːt kriˈeɪtɪv ˈfriːdəm/",
-                meaning: "Tự do sáng tạo tuyệt đối",
-                corpusEn: "Many argue that absolute creative freedom is essential for artistic innovation.",
-                corpusVi: "Nhiều người cho rằng tự do sáng tạo tuyệt đối là cần thiết cho sự đổi mới nghệ thuật.",
-                enInVi: "Nhiều nhà phân tích cho rằng <span class='hl-en'>absolute creative freedom</span> là yếu tố cốt lõi để nghệ sĩ bứt phá.",
-                viInEn: "Many argue that <span class='hl-vi'>tự do sáng tạo tuyệt đối</span> is essential for artistic innovation."
-            },
-            {
-                topic: "Art",
-                word: "Government censorship",
-                type: "C1 Collocation",
-                ipa: "/ˈɡʌvnmənt ˈsɛnsərʃɪp/",
-                meaning: "Kiểm duyệt của chính phủ",
-                corpusEn: "Government censorship can stifle artistic creativity and limit cultural growth.",
-                corpusVi: "Kiểm duyệt của chính phủ có thể kìm hãm sự sáng tạo nghệ thuật và hạn chế sự phát triển văn hóa.",
-                enInVi: "Sự can thiệp quá mức từ <span class='hl-en'>government censorship</span> có thể kìm hãm tiềm năng nghệ thuật.",
-                viInEn: "<span class='hl-vi'>Kiểm duyệt của chính phủ</span> can stifle artistic creativity and limit cultural growth."
-            },
-            {
-                topic: "Art",
-                word: "Artistic autonomy",
-                type: "C2 Collocation",
-                ipa: "/ɑːˈtɪstɪk ɔːˈtɒnəmi/",
-                meaning: "Tự chủ nghệ thuật",
-                corpusEn: "Artistic autonomy is crucial for the development of a vibrant cultural scene.",
-                corpusVi: "Tự chủ nghệ thuật là rất quan trọng cho sự phát triển của một cảnh văn hóa sôi động.",
-                enInVi: "Đảm bảo tính <span class='hl-en'>artistic autonomy</span> giúp đời sống văn hóa xã hội trở nên phong phú hơn.",
-                viInEn: "<span class='hl-vi'>Tự chủ nghệ thuật</span> is crucial for the development of a vibrant cultural scene."
-            },
+            { topic: "Art", word: "Absolute creative freedom", type: "C1 Collocation", ipa: "/ˈæbsəluːt kriˈeɪtɪv ˈfriːdəm/", meaning: "Tự do sáng tạo tuyệt đối", corpusEn: "Many argue that absolute creative freedom is essential for artistic innovation.", corpusVi: "Nhiều người cho rằng tự do sáng tạo tuyệt đối là cần thiết cho sự đổi mới nghệ thuật.", enInVi: "Nhiều nhà phân tích cho rằng <span class='hl-en'>absolute creative freedom</span> là yếu tố cốt lõi để nghệ sĩ bứt phá.", viInEn: "Many argue that <span class='hl-vi'>tự do sáng tạo tuyệt đối</span> is essential for artistic innovation." },
+            { topic: "Art", word: "Government censorship", type: "C1 Collocation", ipa: "/ˈɡʌvnmənt ˈsɛnsərʃɪp/", meaning: "Kiểm duyệt của chính phủ", corpusEn: "Government censorship can stifle artistic creativity and limit cultural growth.", corpusVi: "Kiểm duyệt của chính phủ có thể kìm hãm sự sáng tạo nghệ thuật và hạn chế sự phát triển văn hóa.", enInVi: "Sự can thiệp quá mức từ <span class='hl-en'>government censorship</span> có thể kìm hãm tiềm năng nghệ thuật.", viInEn: "<span class='hl-vi'>Kiểm duyệt của chính phủ</span> can stifle artistic creativity and limit cultural growth." },
+            { topic: "Art", word: "Artistic autonomy", type: "C2 Collocation", ipa: "/ɑːˈtɪstɪk ɔːˈtɒnəmi/", meaning: "Tự chủ nghệ thuật", corpusEn: "Artistic autonomy is crucial for the development of a vibrant cultural scene.", corpusVi: "Tự chủ nghệ thuật là rất quan trọng cho sự phát triển của một cảnh văn hóa sôi động.", enInVi: "Đảm bảo tính <span class='hl-en'>artistic autonomy</span> giúp đời sống văn hóa xã hội trở nên phong phú hơn.", viInEn: "<span class='hl-vi'>Tự chủ nghệ thuật</span> is crucial for the development of a vibrant cultural scene." },
 
-            // --- TOPIC: BUSINESS & MONEY ---
-            {
-                topic: "Business",
-                word: "Bureaucratic inefficiencies",
-                type: "C2 Collocation",
-                ipa: "/ˌbjʊərəˈkrætɪk ˌɪnɪˈfɪʃənsiz/",
-                meaning: "Sự kém hiệu quả của bộ máy quan liêu",
-                corpusEn: "Bureaucratic inefficiencies can hinder innovation in large corporations.",
-                corpusVi: "Sự kém hiệu quả của bộ máy quan liêu có thể cản trở sự sáng tạo trong các tập đoàn lớn.",
-                enInVi: "Nhiều doanh nghiệp gặp khó khăn do ảnh hưởng bởi <span class='hl-en'>bureaucratic inefficiencies</span> kéo dài.",
-                viInEn: "<span class='hl-vi'>Sự kém hiệu quả của bộ máy quan liêu</span> can hinder innovation in large corporations."
-            },
-            {
-                topic: "Business",
-                word: "Global consumer culture",
-                type: "C1 Collocation",
-                ipa: "/ˈɡloʊbl kənˈsuːmər ˈkʌltʃər/",
-                meaning: "Văn hóa tiêu dùng toàn cầu",
-                corpusEn: "A global consumer culture is emerging due to international marketing practices.",
-                corpusVi: "Một văn hóa tiêu dùng toàn cầu đang nổi lên do các hoạt động tiếp thị quốc tế.",
-                enInVi: "Sự bùng nổ của thương mại điện tử đã đẩy nhanh sự hình thành <span class='hl-en'>global consumer culture</span>.",
-                viInEn: "A <span class='hl-vi'>văn hóa tiêu dùng toàn cầu</span> is emerging due to international marketing practices."
-            },
+            { topic: "Business", word: "Bureaucratic inefficiencies", type: "C2 Collocation", ipa: "/ˌbjʊərəˈkrætɪk ˌɪnɪˈfɪʃənsiz/", meaning: "Sự kém hiệu quả của bộ máy quan liêu", corpusEn: "Bureaucratic inefficiencies can hinder innovation in large corporations.", corpusVi: "Sự kém hiệu quả của bộ máy quan liêu có thể cản trở sự sáng tạo trong các tập đoàn lớn.", enInVi: "Nhiều doanh nghiệp gặp khó khăn do ảnh hưởng bởi <span class='hl-en'>bureaucratic inefficiencies</span> kéo dài.", viInEn: "<span class='hl-vi'>Sự kém hiệu quả của bộ máy quan liêu</span> can hinder innovation in large corporations." },
+            { topic: "Business", word: "Global consumer culture", type: "C1 Collocation", ipa: "/ˈɡloʊbl kənˈsuːmər ˈkʌltʃər/", meaning: "Văn hóa tiêu dùng toàn cầu", corpusEn: "A global consumer culture is emerging due to international marketing practices.", corpusVi: "Một văn hóa tiêu dùng toàn cầu đang nổi lên do các hoạt động tiếp thị quốc tế.", enInVi: "Sự bùng nổ của thương mại điện tử đã đẩy nhanh sự hình thành <span class='hl-en'>global consumer culture</span>.", viInEn: "A <span class='hl-vi'>văn hóa tiêu dùng toàn cầu</span> is emerging due to international marketing practices." },
 
-            // --- TOPIC: EDUCATION ---
-            {
-                topic: "Education",
-                word: "Application-based learning",
-                type: "C1 Collocation",
-                ipa: "/ˌæplɪˈkeɪʃən beɪst ˈlɜːrnɪŋ/",
-                meaning: "Học dựa trên ứng dụng thực tế",
-                corpusEn: "Application-based learning helps students develop skills directly applicable to their careers.",
-                corpusVi: "Học dựa trên ứng dụng giúp học sinh phát triển các kỹ năng có thể áp dụng trực tiếp vào nghề nghiệp.",
-                enInVi: "Các trường đại học hiện đại đang chuyển dịch mạnh mẽ sang mô hình <span class='hl-en'>application-based learning</span>.",
-                viInEn: "<span class='hl-vi'>Học dựa trên ứng dụng thực tế</span> helps students develop skills directly applicable to their careers."
-            },
-            {
-                topic: "Education",
-                word: "Pedagogical expertise",
-                type: "C2 Collocation",
-                ipa: "/ˌpɛdəˈɡɒdʒɪkəl ˌɛkspɜːrˈtiːz/",
-                meaning: "Chuyên môn sư phạm",
-                corpusEn: "Pedagogical expertise is essential for effective teaching and learning.",
-                corpusVi: "Chuyên môn sư phạm là cần thiết cho việc giảng dạy và học tập hiệu quả.",
-                enInVi: "Giáo viên không chỉ cần kiến thức rộng mà còn phải nâng cao <span class='hl-en'>pedagogical expertise</span>.",
-                viInEn: "<span class='hl-vi'>Chuyên môn sư phạm</span> is essential for effective teaching and learning."
-            },
+            { topic: "Education", word: "Application-based learning", type: "C1 Collocation", ipa: "/ˌæplɪˈkeɪʃən beɪst ˈlɜːrnɪŋ/", meaning: "Học dựa trên ứng dụng thực tế", corpusEn: "Application-based learning helps students develop skills directly applicable to their careers.", corpusVi: "Học dựa trên ứng dụng giúp học sinh phát triển các kỹ năng có thể áp dụng trực tiếp vào nghề nghiệp.", enInVi: "Các trường đại học hiện đại đang chuyển dịch mạnh mẽ sang mô hình <span class='hl-en'>application-based learning</span>.", viInEn: "<span class='hl-vi'>Học dựa trên ứng dụng thực tế</span> helps students develop skills directly applicable to their careers." },
+            { topic: "Education", word: "Pedagogical expertise", type: "C2 Collocation", ipa: "/ˌpɛdəˈɡɒdʒɪkəl ˌɛkspɜːrˈtiːz/", meaning: "Chuyên môn sư phạm", corpusEn: "Pedagogical expertise is essential for effective teaching and learning.", corpusVi: "Chuyên môn sư phạm là cần thiết cho việc giảng dạy và học tập hiệu quả.", enInVi: "Giáo viên không chỉ cần kiến thức rộng mà còn phải nâng cao <span class='hl-en'>pedagogical expertise</span>.", viInEn: "<span class='hl-vi'>Chuyên môn sư phạm</span> is essential for effective teaching and learning." },
 
-            // --- TOPIC: ENVIRONMENT ---
-            {
-                topic: "Environment",
-                word: "Environmental degradation",
-                type: "C1 Collocation",
-                ipa: "/ɪnˌvaɪrənˈmɛntl ˌdɛɡrəˈdeɪʃən/",
-                meaning: "Suy thoái môi trường",
-                corpusEn: "Environmental degradation leads to severe species decline and ecosystem disruption.",
-                corpusVi: "Suy thoái môi trường dẫn đến suy giảm nghiêm trọng các loài và làm gián đoạn hệ sinh thái.",
-                enInVi: "Tốc độ đô thị hóa nhanh chóng đang gây ra mối lo ngại lớn về <span class='hl-en'>environmental degradation</span>.",
-                viInEn: "<span class='hl-vi'>Suy thoái môi trường</span> leads to severe species decline and ecosystem disruption."
-            },
-            {
-                topic: "Environment",
-                word: "Anthropogenic factors",
-                type: "C2 Collocation",
-                ipa: "/ˌænθrəpəˈdʒɛnɪk ˈfæktərz/",
-                meaning: "Các yếu tố do con người gây ra",
-                corpusEn: "Anthropogenic factors are the primary cause of modern biodiversity loss.",
-                corpusVi: "Các yếu tố do con người gây ra là nguyên nhân chính gây ra biến đổi đa dạng sinh học.",
-                enInVi: "Sự suy giảm rừng nguyên sinh phần lớn bắt nguồn từ các <span class='hl-en'>anthropogenic factors</span>.",
-                viInEn: "<span class='hl-vi'>Các yếu tố do con người gây ra</span> are the primary cause of modern biodiversity loss."
-            },
+            { topic: "Environment", word: "Environmental degradation", type: "C1 Collocation", ipa: "/ɪnˌvaɪrənˈmɛntl ˌdɛɡrəˈdeɪʃən/", meaning: "Suy thoái môi trường", corpusEn: "Environmental degradation leads to severe species decline and ecosystem disruption.", corpusVi: "Suy thoái môi trường dẫn đến suy giảm nghiêm trọng các loài và làm gián đoạn hệ sinh thái.", enInVi: "Tốc độ đô thị hóa nhanh chóng đang gây ra mối lo ngại lớn về <span class='hl-en'>environmental degradation</span>.", viInEn: "<span class='hl-vi'>Suy thoái môi trường</span> leads to severe species decline and ecosystem disruption." },
+            { topic: "Environment", word: "Anthropogenic factors", type: "C2 Collocation", ipa: "/ˌænθrəpəˈdʒɛnɪk ˈfæktərz/", meaning: "Các yếu tố do con người gây ra", corpusEn: "Anthropogenic factors are the primary cause of modern biodiversity loss.", corpusVi: "Các yếu tố do con người gây ra là nguyên nhân chính gây ra biến đổi đa dạng sinh học.", enInVi: "Sự suy giảm rừng nguyên sinh phần lớn bắt nguồn từ các <span class='hl-en'>anthropogenic factors</span>.", viInEn: "<span class='hl-vi'>Các yếu tố do con người gây ra</span> are the primary cause of modern biodiversity loss." },
 
-            // --- TOPIC: LANGUAGE & CULTURE ---
-            {
-                topic: "Language",
-                word: "Linguistic monopoly",
-                type: "C2 Collocation",
-                ipa: "/lɪŋˈɡwɪstɪk məˈnɒpəli/",
-                meaning: "Sự độc tôn ngôn ngữ",
-                corpusEn: "A linguistic monopoly can threaten the preservation of minority languages.",
-                corpusVi: "Sự độc tôn ngôn ngữ có thể đe dọa việc bảo tồn các ngôn ngữ thiểu số.",
-                enInVi: "Sự thống trị của tiếng Anh toàn cầu có nguy cơ tạo ra một <span class='hl-en'>linguistic monopoly</span>.",
-                viInEn: "A <span class='hl-vi'>sự độc tôn ngôn ngữ</span> can threaten the preservation of minority languages."
-            },
-            {
-                topic: "Language",
-                word: "Cross-cultural competence",
-                type: "C1 Collocation",
-                ipa: "/krɒs ˈkʌltʃərəl ˈkɒmpɪtəns/",
-                meaning: "Năng lực giao tiếp liên văn hóa",
-                corpusEn: "Cross-cultural competence is enhanced through multilingual education.",
-                corpusVi: "Năng lực liên văn hóa được nâng cao thông qua giáo dục đa ngôn ngữ.",
-                enInVi: "Làm việc trong môi trường đa quốc gia đòi hỏi nhân sự phải trang bị <span class='hl-en'>cross-cultural competence</span>.",
-                viInEn: "<span class='hl-vi'>Năng lực giao tiếp liên văn hóa</span> is enhanced through multilingual education."
-            },
+            { topic: "Language", word: "Linguistic monopoly", type: "C2 Collocation", ipa: "/lɪŋˈɡwɪstɪk məˈnɒpəli/", meaning: "Sự độc tôn ngôn ngữ", corpusEn: "A linguistic monopoly can threaten the preservation of minority languages.", corpusVi: "Sự độc tôn ngôn ngữ có thể đe dọa việc bảo tồn các ngôn ngữ thiểu số.", enInVi: "Sự thống trị của tiếng Anh toàn cầu có nguy cơ tạo ra một <span class='hl-en'>linguistic monopoly</span>.", viInEn: "A <span class='hl-vi'>sự độc tôn ngôn ngữ</span> can threaten the preservation of minority languages." },
+            { topic: "Language", word: "Cross-cultural competence", type: "C1 Collocation", ipa: "/krɒs ˈkʌltʃərəl ˈkɒmpɪtəns/", meaning: "Năng lực giao tiếp liên văn hóa", corpusEn: "Cross-cultural competence is enhanced through multilingual education.", corpusVi: "Năng lực liên văn hóa được nâng cao thông qua giáo dục đa ngôn ngữ.", enInVi: "Làm việc trong môi trường đa quốc gia đòi hỏi nhân sự phải trang bị <span class='hl-en'>cross-cultural competence</span>.", viInEn: "<span class='hl-vi'>Năng lực giao tiếp liên văn hóa</span> is enhanced through multilingual education." },
 
-            // --- TOPIC: SOCIETY ---
-            {
-                topic: "Society",
-                word: "Structural reforms",
-                type: "C1 Collocation",
-                ipa: "/ˈstrʌktʃərəl rɪˈfɔːrmz/",
-                meaning: "Cải cách cơ cấu hệ thống",
-                corpusEn: "Structural reforms are essential for addressing systemic social inequalities.",
-                corpusVi: "Cải cách cơ cấu là cần thiết để giải quyết các bất bình đẳng hệ thống xã hội.",
-                enInVi: "Chính phủ đang triển khai các đợt <span class='hl-en'>structural reforms</span> để thúc đẩy công bằng xã hội.",
-                viInEn: "<span class='hl-vi'>Cải cách cơ cấu hệ thống</span> are essential for addressing systemic social inequalities."
-            },
+            { topic: "Society", word: "Structural reforms", type: "C1 Collocation", ipa: "/ˈstrʌktʃərəl rɪˈfɔːrmz/", meaning: "Cải cách cơ cấu hệ thống", corpusEn: "Structural reforms are essential for addressing systemic social inequalities.", corpusVi: "Cải cách cơ cấu là cần thiết để giải quyết các bất bình đẳng hệ thống xã hội.", enInVi: "Chính phủ đang triển khai các đợt <span class='hl-en'>structural reforms</span> để thúc đẩy công bằng xã hội.", viInEn: "<span class='hl-vi'>Cải cách cơ cấu hệ thống</span> are essential for addressing systemic social inequalities." },
 
-            // --- TOPIC: SPORT ---
-            {
-                topic: "Sport",
-                word: "Sky-high salaries",
-                type: "C1 Collocation",
-                ipa: "/skaɪ haɪ ˈsæləriz/",
-                meaning: "Mức lương cao ngất trời",
-                corpusEn: "Some argue that sky-high salaries for professional athletes are disproportionate.",
-                corpusVi: "Một số người cho rằng mức lương cao ngất trời cho các vận động viên chuyên nghiệp là không tương xứng.",
-                enInVi: "Việc các ngôi sao bóng đá nhận <span class='hl-en'>sky-high salaries</span> đang gây ra nhiều tranh cãi dư luận.",
-                viInEn: "Some argue that <span class='hl-vi'>mức lương cao ngất trời</span> for professional athletes are disproportionate."
-            },
+            { topic: "Sport", word: "Sky-high salaries", type: "C1 Collocation", ipa: "/skaɪ haɪ ˈsæləriz/", meaning: "Mức lương cao ngất trời", corpusEn: "Some argue that sky-high salaries for professional athletes are disproportionate.", corpusVi: "Một số người cho rằng mức lương cao ngất trời cho các vận động viên chuyên nghiệp là không tương xứng.", enInVi: "Việc các ngôi sao bóng đá nhận <span class='hl-en'>sky-high salaries</span> đang gây ra nhiều tranh cãi dư luận.", viInEn: "Some argue that <span class='hl-vi'>mức lương cao ngất trời</span> for professional athletes are disproportionate." },
 
-            // --- TOPIC: WORK & TECH ---
-            {
-                topic: "Work",
-                word: "Technological advancements",
-                type: "C1 Collocation",
-                ipa: "/ˌtɛknəˈlɒdʒɪkəl ədˈvænsmənts/",
-                meaning: "Sự tiến bộ công nghệ",
-                corpusEn: "Technological advancements have revolutionized modern workspace efficiency.",
-                corpusVi: "Sự tiến bộ công nghệ đã cách mạng hóa hiệu suất làm việc hiện đại.",
-                enInVi: "Nhờ có các <span class='hl-en'>technological advancements</span>, con người có thể làm việc từ xa dễ dàng.",
-                viInEn: "<span class='hl-vi'>Sự tiến bộ công nghệ</span> have revolutionized modern workspace efficiency."
-            },
-            {
-                topic: "Work",
-                word: "Equitable compensation",
-                type: "C2 Collocation",
-                ipa: "/ˈɛkwɪtəbl ˌkɒmpɛnˈseɪʃən/",
-                meaning: "Sự bồi thường/thù lao công bằng",
-                corpusEn: "Advocates argue for equitable compensation across all employment sectors.",
-                corpusVi: "Những người ủng hộ lập luận cho sự thù lao công bằng trên tất cả các lĩnh vực việc làm.",
-                enInVi: "Đảm bảo chế độ <span class='hl-en'>equitable compensation</span> giúp tăng mức độ gắn kết của người lao động.",
-                viInEn: "Advocates argue for <span class='hl-vi'>sự thù lao công bằng</span> across all employment sectors."
-            }
+            { topic: "Work", word: "Technological advancements", type: "C1 Collocation", ipa: "/ˌtɛknəˈlɒdʒɪkəl ədˈvænsmənts/", meaning: "Sự tiến bộ công nghệ", corpusEn: "Technological advancements have revolutionized modern workspace efficiency.", corpusVi: "Sự tiến bộ công nghệ đã cách mạng hóa hiệu suất làm việc hiện đại.", enInVi: "Nhờ có các <span class='hl-en'>technological advancements</span>, con người có thể làm việc từ xa dễ dàng.", viInEn: "<span class='hl-vi'>Sự tiến bộ công nghệ</span> have revolutionized modern workspace efficiency." },
+            { topic: "Work", word: "Equitable compensation", type: "C2 Collocation", ipa: "/ˈɛkwɪtəbl ˌkɒmpɛnˈseɪʃən/", meaning: "Sự bồi thường/thù lao công bằng", corpusEn: "Advocates argue for equitable compensation across all employment sectors.", corpusVi: "Những người ủng hộ lập luận cho sự thù lao công bằng trên tất cả các lĩnh vực việc làm.", enInVi: "Đảm bảo chế độ <span class='hl-en'>equitable compensation</span> giúp tăng mức độ gắn kết của người lao động.", viInEn: "Advocates argue for <span class='hl-vi'>sự thù lao công bằng</span> across all employment sectors." }
         ];
 
         let filteredVocab = [...fullVocabData];
@@ -679,66 +507,64 @@
         let currentQuizIndex = 0;
         let shuffledQuiz = [];
 
-        // TOPIC FILTER LOGIC
         function onTopicChange() {
             const selectedTopic = document.getElementById("topicFilter").value;
-            if (selectedTopic === "ALL") {
-                filteredVocab = [...fullVocabData];
-            } else {
-                filteredVocab = fullVocabData.filter(item => item.topic === selectedTopic);
-            }
-            
+            filteredVocab = selectedTopic === "ALL"
+                ? [...fullVocabData]
+                : fullVocabData.filter(item => item.topic === selectedTopic);
+
             currentIndex = 0;
             updateFlashcard();
             renderLists();
             initQuiz();
         }
 
-        // 1. FLASHCARD CONTROLLER
         function updateFlashcard() {
             const cardElement = document.getElementById("card");
             if (!cardElement) return;
             cardElement.classList.remove("flipped");
 
             setTimeout(() => {
-                if (filteredVocab.length === 0) return;
+                if (!filteredVocab.length) return;
                 const item = filteredVocab[currentIndex];
-                document.getElementById("fc-badge").innerText = item.type;
-                document.getElementById("fc-topic").innerText = item.topic;
-                document.getElementById("fc-word").innerText = item.word;
-                document.getElementById("fc-ipa").innerText = item.ipa;
-                document.getElementById("fc-meaning").innerText = item.meaning;
-                document.getElementById("fc-example").innerText = `" ${item.corpusEn} "`;
-                document.getElementById("fc-counter").innerText = `Thẻ ${currentIndex + 1} / ${filteredVocab.length}`;
+                document.getElementById("fc-badge").textContent = item.type;
+                document.getElementById("fc-topic").textContent = item.topic;
+                document.getElementById("fc-word").textContent = item.word;
+                document.getElementById("fc-ipa").textContent = item.ipa;
+                document.getElementById("fc-meaning").textContent = item.meaning;
+                document.getElementById("fc-example").textContent = `"${item.corpusEn}"`;
+                document.getElementById("fc-counter").textContent = `Thẻ ${currentIndex + 1} / ${filteredVocab.length}`;
             }, 150);
         }
 
         function flipCard() {
-            document.getElementById("card").classList.toggle("flipped");
+            const card = document.getElementById("card");
+            if (card) card.classList.toggle("flipped");
         }
 
         function nextCard() {
-            if (filteredVocab.length === 0) return;
+            if (!filteredVocab.length) return;
             currentIndex = (currentIndex + 1) % filteredVocab.length;
             updateFlashcard();
         }
 
         function prevCard() {
-            if (filteredVocab.length === 0) return;
+            if (!filteredVocab.length) return;
             currentIndex = (currentIndex - 1 + filteredVocab.length) % filteredVocab.length;
             updateFlashcard();
         }
 
         function randomCard() {
-            if (filteredVocab.length === 0) return;
+            if (!filteredVocab.length) return;
             currentIndex = Math.floor(Math.random() * filteredVocab.length);
             updateFlashcard();
         }
 
         function speakText(text) {
-            if ('speechSynthesis' in window) {
+            if (!text) return;
+            if ("speechSynthesis" in window) {
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
+                utterance.lang = "en-US";
                 utterance.rate = 0.9;
                 window.speechSynthesis.cancel();
                 window.speechSynthesis.speak(utterance);
@@ -753,7 +579,6 @@
             }
         }
 
-        // 2. QUIZ CONTROLLER
         function initQuiz() {
             quizScore = 0;
             currentQuizIndex = 0;
@@ -763,8 +588,10 @@
 
         function renderQuizQuestion() {
             const container = document.getElementById("quiz-container");
-            if (shuffledQuiz.length === 0) {
-                container.innerHTML = `<p style='text-align:center;'>Không có dữ liệu cho chủ đề này.</p>`;
+            if (!container) return;
+
+            if (!shuffledQuiz.length) {
+                container.innerHTML = `<p style="text-align:center;">Không có dữ liệu cho chủ đề này.</p>`;
                 return;
             }
 
@@ -774,9 +601,10 @@
                         <h2>🎉 Hoàn thành bài trắc nghiệm!</h2>
                         <p style="margin-top: 10px;">Điểm số của bạn:</p>
                         <div class="score-num">${quizScore} / ${shuffledQuiz.length}</div>
-                        <button class="btn" style="margin-top: 20px;" onclick="initQuiz()">🔄 Làm lại bài kiểm tra</button>
+                        <button class="btn" type="button" style="margin-top: 20px;" id="retryQuizBtn">🔄 Làm lại bài kiểm tra</button>
                     </div>
                 `;
+                document.getElementById("retryQuizBtn").addEventListener("click", initQuiz);
                 return;
             }
 
@@ -786,7 +614,7 @@
                 .map(item => item.meaning)
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 3);
-            
+
             const allOptions = [q.meaning, ...wrongOptions].sort(() => Math.random() - 0.5);
 
             container.innerHTML = `
@@ -797,23 +625,29 @@
                 <div class="quiz-question">Cụm từ "<strong>${q.word}</strong>" có nghĩa là gì?</div>
                 <div class="options-grid">
                     ${allOptions.map(opt => `
-                        <button class="option-btn" onclick="checkAnswer(this, ${opt === q.meaning}, '${q.meaning.replace(/'/g, "\\'")}' )">${opt}</button>
-                    `).join('')}
+                        <button class="option-btn" type="button" data-correct="${opt === q.meaning}" data-correct-meaning="${q.meaning.replace(/"/g, '&quot;')}">${opt}</button>
+                    `).join("")}
                 </div>
             `;
         }
 
-        function checkAnswer(btn, isCorrect, correctMeaning) {
-            const allBtns = document.querySelectorAll('.option-btn');
+        function handleQuizClick(event) {
+            const btn = event.target.closest(".option-btn");
+            if (!btn) return;
+
+            const allBtns = document.querySelectorAll(".option-btn");
             allBtns.forEach(b => b.disabled = true);
 
-            if (isCorrect === true) {
-                btn.classList.add('correct');
+            const isCorrect = btn.dataset.correct === "true";
+            const correctMeaning = btn.dataset.correctMeaning;
+
+            if (isCorrect) {
+                btn.classList.add("correct");
                 quizScore++;
             } else {
-                btn.classList.add('wrong');
+                btn.classList.add("wrong");
                 allBtns.forEach(b => {
-                    if (b.innerText === correctMeaning) b.classList.add('correct');
+                    if (b.dataset.correct === "true") b.classList.add("correct");
                 });
             }
 
@@ -823,15 +657,14 @@
             }, 1200);
         }
 
-        // 3. RENDER OTHER LISTS
         function renderLists() {
             const corpusList = document.getElementById("corpus-list");
             if (corpusList) {
-                corpusList.innerHTML = filteredVocab.map((item) => `
+                corpusList.innerHTML = filteredVocab.map(item => `
                     <div class="item-card">
                         <div class="item-title">
-                            <span>${item.word} <small style='font-size:0.75rem; color:#64748b;'>(${item.topic})</small></span>
-                            <button class="audio-btn" onclick="speakText('${item.word.replace(/'/g, "\\'") }')">🔊</button>
+                            <span>${item.word} <small style="font-size:0.75rem; color:#64748b;">(${item.topic})</small></span>
+                            <button class="audio-btn" type="button" data-text="${item.word}">🔊</button>
                         </div>
                         <div class="item-meaning">💡 Nghĩa: ${item.meaning}</div>
                         <div class="sentence-box">
@@ -839,10 +672,9 @@
                             <p style="color: #64748b; margin-top: 4px;">VI: ${item.corpusVi}</p>
                         </div>
                     </div>
-                `).join('');
+                `).join("");
             }
 
-            // EN in VI
             const enViList = document.getElementById("en-vi-list");
             if (enViList) {
                 enViList.innerHTML = filteredVocab.map(item => `
@@ -855,44 +687,89 @@
                             <p>${item.enInVi}</p>
                         </div>
                     </div>
-                `).join('');
+                `).join("");
             }
 
-            // VI in EN
             const viEnList = document.getElementById("vi-en-list");
             if (viEnList) {
                 viEnList.innerHTML = filteredVocab.map(item => `
                     <div class="item-card">
                         <div class="item-title">
                             <span>${item.word}</span>
-                            <button class="audio-btn" onclick="speakText('${item.corpusEn.replace(/'/g, "\\'") }')">🔊</button>
+                            <button class="audio-btn" type="button" data-text="${item.corpusEn}">🔊</button>
                         </div>
                         <div class="sentence-box">
                             <p>${item.viInEn}</p>
                         </div>
                     </div>
-                `).join('');
+                `).join("");
             }
         }
 
-        // TAB SWITCHING
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+            document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
 
-            const activeButton = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.includes(tabId) || btn.onclick && btn.onclick.toString().includes(tabId));
-            if (activeButton) activeButton.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
+            const tabButton = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+            if (tabButton) tabButton.classList.add("active");
 
-            if (tabId === 'quiz' && currentQuizIndex === 0) {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent) tabContent.classList.add("active");
+
+            if (tabId === "quiz" && currentQuizIndex === 0) {
                 initQuiz();
             }
         }
 
-        // INIT APPLICATION
+        document.addEventListener("click", function(event) {
+            const audioBtn = event.target.closest(".audio-btn");
+            if (audioBtn) {
+                const text = audioBtn.dataset.text || "";
+                speakText(text);
+                return;
+            }
+
+            const tabBtn = event.target.closest(".tab-btn");
+            if (tabBtn) {
+                switchTab(tabBtn.dataset.tab);
+                return;
+            }
+
+            const flashcardWrapper = event.target.closest("#flashcardWrapper");
+            if (flashcardWrapper) {
+                flipCard();
+                return;
+            }
+
+            if (event.target.id === "speakCurrentWordBtn") {
+                speakCurrentWord();
+                return;
+            }
+
+            if (event.target.id === "prevCardBtn") {
+                prevCard();
+                return;
+            }
+
+            if (event.target.id === "randomCardBtn") {
+                randomCard();
+                return;
+            }
+
+            if (event.target.id === "nextCardBtn") {
+                nextCard();
+                return;
+            }
+
+            if (event.target.closest(".option-btn")) {
+                handleQuizClick(event);
+            }
+        });
+
         window.onload = function() {
             updateFlashcard();
             renderLists();
+            initQuiz();
         };
     </script>
 </body>
